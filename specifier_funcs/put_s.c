@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   put_s.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 12:12:49 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/13 16:50:09 by katakaha         ###   ########.fr       */
+/*   Created: 2026/01/13 15:23:02 by katakaha          #+#    #+#             */
+/*   Updated: 2026/01/13 17:12:56 by katakaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINT_F_H
-# define PRINT_F_H
+#include "../ft_printf.h"
 
-# define WRITE_ERR -1
+int	put_s(va_list ap)
+{
+	char	*s;
+	int		n;
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdarg.h>
-
-typedef int (*fn_lookup)(va_list);
-
-int	ft_printf(const char *, ...);
-
-#endif
+	s = va_arg(ap, char *);
+	if (!s)
+		s = "(null)";
+	if ((n = write(1, s, ft_strlen(s))) < 0)
+		return (WRITE_ERR);
+	return (n);
+}

@@ -3,48 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:10:45 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/13 12:27:44 by Ezukaz           ###   ########.fr       */
+/*   Updated: 2026/01/13 17:03:13 by katakaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
+
 static int	isset(const char c)
 {
-	int					i;
-	const char	*conv_c[9];
-
-	i = 0;
-	conv_c = {'c', 's', 'p', 'd', 'i', 'u', 'x', 'X', '%', '\0'};
-	while (conv_c[i] != '\0')
-	{
-		if (conv_c[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
+	return (!!ft_strchr("cspdiuxX%", c));
 }
 
-static int	call_specifier_fn(const unsigned char c, va_)
+static int	call_specifier_fn(const unsigned char c, va_list ap)
 {
-	static fn_lookup	funcs[9];
+	static fn_lookup	funcs[256];
 	static int				flag;
 
+	if (c == '%')
+		return (write(1, "%", 1));
 	if (!flag)
 	{
-		funcs['c'] = ;
-		funcs['s'] = ;
-		funcs['p'] = ;
-		funcs['d'] = ;
-		funcs['i'] = ;
-		funcs['u'] = ;
-		funcs['x'] = ;
-		funcs['X'] = ;
-		funcs['%'] = ;
+		funcs['c'] = put_s;
+		funcs['s'] = put_s;
+		funcs['p'] = put_address;
+		funcs['d'] = put_nbr;
+		funcs['i'] = put_nbr;
+		funcs['u'] = put_nbr;
+		funcs['x'] = put_hex;
+		funcs['X'] = put_hex;
 		flag = 1;
 	}
-	return (funcs[c](va_));
+	return (funcs[c](ap));
 }
 
 int	ft_printf(const char *format, ...)
@@ -81,5 +73,7 @@ int	ft_printf(const char *format, ...)
 		write(1, format[i], 1);
 		i++;
 	}
-	return (i + 1);
+	if (i != 0 && format[i - 1] == '%')
+		j += write(1, "%", 1);
+	return (i + j);
 }

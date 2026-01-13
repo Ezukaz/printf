@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   print_unsigned_base.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 12:12:49 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/13 16:50:09 by katakaha         ###   ########.fr       */
+/*   Created: 2026/01/13 15:22:55 by katakaha          #+#    #+#             */
+/*   Updated: 2026/01/13 17:09:37 by katakaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINT_F_H
-# define PRINT_F_H
+#include "../ft_printf.h"
 
-# define WRITE_ERR -1
+int	print_unsigned_base(va_list ap)
+{
+	int	d;
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdarg.h>
-
-typedef int (*fn_lookup)(va_list);
-
-int	ft_printf(const char *, ...);
-
-#endif
+	d = va_arg(ap, int);
+	return ()
+}

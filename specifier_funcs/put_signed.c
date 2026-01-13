@@ -1,26 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   put_signed.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 12:12:49 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/13 16:50:09 by katakaha         ###   ########.fr       */
+/*   Created: 2026/01/13 15:22:59 by katakaha          #+#    #+#             */
+/*   Updated: 2026/01/13 17:07:31 by katakaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PRINT_F_H
-# define PRINT_F_H
-
-# define WRITE_ERR -1
-
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdarg.h>
-
-typedef int (*fn_lookup)(va_list);
-
-int	ft_printf(const char *, ...);
-
-#endif
