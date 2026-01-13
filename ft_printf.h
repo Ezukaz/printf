@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:12:49 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/13 11:41:30 by katakaha         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:28:26 by Ezukaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
+
+typedef int (*fn_lookup)(int);
 
 int	ft_printf(const char *, ...);
 
