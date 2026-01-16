@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:12:49 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/15 23:07:14 by Ezukaz           ###   ########.fr       */
+/*   Updated: 2026/01/16 11:39:23 by katakaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int	print_x(va_list ap);
 int	print_X(va_list ap);
 int	print_p(va_list ap);
 int	print_unsigned_base(unsigned long ud, const char *base_chars);
+int	verify_add(int count, int write_res);
 
 #endif

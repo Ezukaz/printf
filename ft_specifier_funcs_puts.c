@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_specifier_funcs_puts.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 12:12:56 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/15 23:50:14 by Ezukaz           ###   ########.fr       */
+/*   Updated: 2026/01/16 12:01:59 by katakaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	put_signed(va_list ap)
 	int				d;
 	unsigned long	ul;
 	int				sign;
-	int				count;
 
 	sign = 0;
 	d = va_arg(ap, int);
@@ -60,10 +59,7 @@ int	put_signed(va_list ap)
 	}
 	else
 		ul = (unsigned long)d;
-	count = print_unsigned_base(ul, BASE_10);
-	if (count == PRINT_ERR)
-		return (PRINT_ERR);
-	return (sign + count);
+	return (verify_add(sign, print_unsigned_base(ul, BASE_10)));
 }
 
 int	put_unsigned(va_list ap)

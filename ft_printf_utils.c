@@ -3,24 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 12:03:57 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/16 00:42:16 by Ezukaz           ###   ########.fr       */
+/*   Updated: 2026/01/16 11:54:20 by katakaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "Libft/libft.h"
 
-int	check_print(int count, const void *ptr, size_t len)
+int	verify_add(int count, int write_res)
 {
-	int	res;
-
-	res = write(1, ptr, len);
-	if (res == PRINT_ERR)
+	if (write_res == PRINT_ERR)
 		return (PRINT_ERR);
-	return (res + count);
+	return (write_res + count);
 }
 
 /*

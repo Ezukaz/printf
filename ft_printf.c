@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:10:45 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/16 01:14:33 by Ezukaz           ###   ########.fr       */
+/*   Updated: 2026/01/16 12:58:13 by katakaha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	isset(const char c)
 	return (ft_strchr("cspdiuxX%", c) != NULL);
 }
 
+// Precondition: c must be valid (isset does the check)
 static int	call_specifier_fn(const unsigned char c, va_list ap)
 {
 	static fn_lookup_t	funcs[256];
@@ -40,58 +41,54 @@ static int	call_specifier_fn(const unsigned char c, va_list ap)
 	}
 	return (funcs[c](ap));
 }
+
 //Unknown format will print '%' + char
 static int	print_flagged(const char c, va_list ap)
 {
+	char	buf[2];
+
 	if (isset(c))
 		return (call_specifier_fn(c, ap));
-	if (write(1, "%", 1) == PRINT_ERR)
-		return (PRINT_ERR);
-	if (write(1, &c, 1) == PRINT_ERR)
-		return (PRINT_ERR);
-	return (2);
-}
-
-static int	write_count(const int flag, const char c, va_list ap, int count)
-{
-	int	tmp;
-
-	if (flag)
-	{
-		tmp = print_flagged(c, ap);
-		if (tmp == PRINT_ERR)
-			return (PRINT_ERR);
-		return (tmp + count);
-	}
-	tmp = write(1, &c, 1);
-	if (tmp == PRINT_ERR)
-		return (PRINT_ERR);
-	return (tmp + count);
+	buf[0] = '%';
+	buf[1] = c;
+	return (write(1, buf, 2));
 }
 
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
 	int		count;
-	int		flag;
+	int		flag_specifier;
 	int		i;
 
-	flag = 0;
+	flag_specifier = 0;
 	i = 0;
 	va_start(args, format);
+	count = 0;
 	while (format[i] != '\0')
 	{
-		count = write_count(flag, format[i], args, count);
+		if (flag_specifier)
+			count = verify_add(count, print_flagged(format[i], args));
+		else if (format[i] != '%')
+			count = verify_add(count, write(1, &format[i], 1));
 		if (count == PRINT_ERR)
-			return (PRINT_ERR);
-		if (format[i] == '%' || flag)
-			flag ^= 1;
+			break ;
+		if (format[i] == '%' || flag_specifier)
+			flag_specifier ^= 1;
 		i++;
 	}
 	va_end(args);
-	if (flag)
-		return (write_count(0, '%', args, count));
+	if (flag_specifier && count != PRINT_ERR)
+		return (verify_add(count, write(1, "%", 1)));
+	return (count);
 }
+
+// static int	count_write(const int flag, const char c, va_list ap, int count)
+// {
+// 	if (flag)
+// 		return (verify_add(count, print_flagged(c, ap)));
+// 	return (verify_add(count, write(1, &c, 1)));
+// }
 
 	// while (format[i] != '\0')
 	// {
