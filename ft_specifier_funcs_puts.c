@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_specifier_funcs_puts.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 12:12:56 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/15 18:02:37 by katakaha         ###   ########.fr       */
+/*   Updated: 2026/01/15 23:50:14 by Ezukaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,11 @@ int	put_c(va_list ap)
 int	put_s(va_list ap)
 {
 	char	*s;
-	int		n;
 
 	s = va_arg(ap, char *);
 	if (!s)
 		s = "(null)";
-	if ((n = write(1, s, ft_strlen(s))) < 0)
-		return (PRINT_ERR);
-	return (n);
+	return (write(1, s, ft_strlen(s)));
 }
 
 /*
@@ -49,24 +46,24 @@ int	put_signed(va_list ap)
 {
 	int				d;
 	unsigned long	ul;
-	int				n;
-	int				tmp;
+	int				sign;
+	int				count;
 
-	n = 0;
+	sign = 0;
 	d = va_arg(ap, int);
 	if (d < 0)
 	{
-		n = write(1, "-", 1);
-		if (n == PRINT_ERR)
+		sign = write(1, "-", 1);
+		if (sign == PRINT_ERR)
 			return (PRINT_ERR);
 		ul = (unsigned long)(-(long)d);
 	}
 	else
 		ul = (unsigned long)d;
-	tmp = print_unsigned_base(ul, BASE_10);
-	if (tmp == PRINT_ERR)
+	count = print_unsigned_base(ul, BASE_10);
+	if (count == PRINT_ERR)
 		return (PRINT_ERR);
-	return (n + tmp);
+	return (sign + count);
 }
 
 int	put_unsigned(va_list ap)

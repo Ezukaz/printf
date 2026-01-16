@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_specifier_funcs_hex.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 12:24:32 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/15 18:37:09 by katakaha         ###   ########.fr       */
+/*   Updated: 2026/01/15 23:50:58 by Ezukaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ _t is the suffix for type. I'll keep that in mind when naming types
 int	print_p(va_list ap)
 {
 	void	*p;
-	int		n;
-	int		tmp;
+	int		count;
 
 	p = va_arg(ap, void *);
 	if (!p)
 		return (write(1, "(nil)", 5));
-	n = write(1, "0x", 2);
-	tmp = print_unsigned_base((uintptr_t)p, HEX_LOWER);
-	if (tmp == PRINT_ERR)
+	if (write(1, "0x", 2) == PRINT_ERR)
 		return (PRINT_ERR);
-	return (n + tmp);
+	count = print_unsigned_base((uintptr_t)p, HEX_LOWER);
+	if (count == PRINT_ERR)
+		return (PRINT_ERR);
+	return (2 + count);
 }

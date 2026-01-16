@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 12:10:45 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/15 20:08:49 by katakaha         ###   ########.fr       */
+/*   Updated: 2026/01/16 01:14:33 by Ezukaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,59 +43,54 @@ static int	call_specifier_fn(const unsigned char c, va_list ap)
 //Unknown format will print '%' + char
 static int	print_flagged(const char c, va_list ap)
 {
-	int	n;
-
-	n = 0;
 	if (isset(c))
 		return (call_specifier_fn(c, ap));
-	n += write(1, "%", 1);
-	n += write(1, &c, 1);
-	return (n);
+	if (write(1, "%", 1) == PRINT_ERR)
+		return (PRINT_ERR);
+	if (write(1, &c, 1) == PRINT_ERR)
+		return (PRINT_ERR);
+	return (2);
 }
 
-static int	count_printed(const char *format, va_list ap)
+static int	write_count(const int flag, const char c, va_list ap, int count)
 {
-	int	i;
-	int	j;
-	int flag;
-	int tmp;
+	int	tmp;
 
-	i = 0;
-	j = 0;
-	flag = 0;
-	while (format[i] != '\0')
+	if (flag)
 	{
-		if (flag)
-		{
-			tmp = print_flagged(format[i], ap);
-			if (tmp == PRINT_ERR)
-				return (PRINT_ERR);
-			j += tmp;
-		}
-		if (format[i] == '%' || flag)
-		{
-			flag ^= 1;
-			i++;
-			continue ;
-		}
-		j += write(1, &format[i++], 1);
+		tmp = print_flagged(c, ap);
+		if (tmp == PRINT_ERR)
+			return (PRINT_ERR);
+		return (tmp + count);
 	}
-	if (i != 0 && format[i - 1] == '%')
-		j += write(1, "%", 1);
-	return (j);
+	tmp = write(1, &c, 1);
+	if (tmp == PRINT_ERR)
+		return (PRINT_ERR);
+	return (tmp + count);
 }
 
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
-	int		n;
+	int		count;
+	int		flag;
+	int		i;
 
+	flag = 0;
+	i = 0;
 	va_start(args, format);
-	n = count_printed(format, args);
-	if (n == PRINT_ERR)
-		return (PRINT_ERR);
+	while (format[i] != '\0')
+	{
+		count = write_count(flag, format[i], args, count);
+		if (count == PRINT_ERR)
+			return (PRINT_ERR);
+		if (format[i] == '%' || flag)
+			flag ^= 1;
+		i++;
+	}
 	va_end(args);
-	return (n);
+	if (flag)
+		return (write_count(0, '%', args, count));
 }
 
 	// while (format[i] != '\0')

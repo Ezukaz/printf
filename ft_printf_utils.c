@@ -3,15 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: katakaha <katakaha@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: Ezukaz <katakaha@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 12:03:57 by katakaha          #+#    #+#             */
-/*   Updated: 2026/01/15 16:45:27 by katakaha         ###   ########.fr       */
+/*   Updated: 2026/01/16 00:42:16 by Ezukaz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "Libft/libft.h"
+
+int	check_print(int count, const void *ptr, size_t len)
+{
+	int	res;
+
+	res = write(1, ptr, len);
+	if (res == PRINT_ERR)
+		return (PRINT_ERR);
+	return (res + count);
+}
 
 /*
 POINTERS:
@@ -29,7 +39,7 @@ int	print_unsigned_base(unsigned long ul, const char *base_chars)
 	size_t	base;
 	char	buf[65];
 	int		i;
-	int		n;
+	int		char_count;
 
 	if (!base_chars || base_chars[0] == '\0' || base_chars[1] == '\0')
 		return (PRINT_ERR);
@@ -44,8 +54,8 @@ int	print_unsigned_base(unsigned long ul, const char *base_chars)
 		ul /= base;
 	}
 	i++;
-	n = 64 - i;
-	return (write(1, buf + i, n));
+	char_count = 64 - i;
+	return (write(1, buf + i, char_count));
 }
 
 /*
@@ -65,7 +75,7 @@ unsigned
 
 // int	put_nbr(int d)
 // {
-// 	int				n;
+// 	int				char_count;
 // 	int				i;
 // 	unsigned int	ud;
 // 	char			s[12];
@@ -83,6 +93,6 @@ unsigned
 // 	if (d < 0)
 // 		s[i--] = '-';
 // 	i++;
-// 	n = 10 - i;
-// 	return (write(1, s + i, n));
+// 	char_count = 10 - i;
+// 	return (write(1, s + i, char_count));
 // }
